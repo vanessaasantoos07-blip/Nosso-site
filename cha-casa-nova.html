@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chá de Casa Nova</title>
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        scroll-behavior: smooth;
+    }
+    /* Primeira Página */
+    .welcome-page {
+        height: 100vh;
+        background-image: url('sua-foto.jpg'); /* Substitua pela sua foto */
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        color: white;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .overlay {
+        position: absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background-color: rgba(70, 130, 180, 0.5); /* Azul serenity transparente */
+        z-index:1;
+    }
+    .welcome-content {
+        position: relative;
+        z-index: 2;
+        max-width: 600px;
+        padding: 20px;
+    }
+    .welcome-content h1 {
+        font-size: 2em;
+        margin-bottom: 20px;
+    }
+    .btn-scroll {
+        background-color: white;
+        color: #4682B4;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    /* Segunda Página – Loja */
+    .store-page {
+        padding: 50px 20px;
+        background-color: #f8f8f8;
+        min-height: 100vh;
+    }
+    .store-page h2 {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #333;
+    }
+    .products {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+    }
+    .product {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    .product img {
+        max-width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    .product h3 {
+        margin: 15px 0 10px 0;
+    }
+    .quantity {
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    .btn-buy, .btn-shoppe {
+        padding: 8px 12px;
+        margin: 5px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: white;
+        font-weight: bold;
+    }
+    .btn-buy {
+        background-color: #4682B4;
+    }
+    .btn-shoppe {
+        background-color: #FF5722;
+    }
+
+    /* Mensagem final */
+    .thank-you {
+        text-align: center;
+        margin-top: 50px;
+        font-size: 1.2em;
+        color: #333;
+    }
+</style>
+</head>
+<body>
+
+<!-- Primeira Página -->
+<section class="welcome-page">
+    <div class="overlay"></div>
+    <div class="welcome-content">
+        <h1>Obrigado por nos ajudar neste novo capítulo da nossa história!</h1>
+        <p>Seu carinho e presença significam muito para nós.</p>
+        <button class="btn-scroll" onclick="document.getElementById('store').scrollIntoView({behavior: 'smooth'});">
+            Ver lista de presentes
+        </button>
+    </div>
+</section>
+
+<!-- Segunda Página – Loja -->
+<section class="store-page" id="store">
+    <h2>Lista de Presentes</h2>
+    <div class="products">
+
+        <!-- Produto Exemplo 1 -->
+        <div class="product" data-quantity="3">
+            <img src="produto1.jpg" alt="Produto 1">
+            <h3>Toalha de banho</h3>
+            <div class="quantity">Quantidade disponível: <span class="qty">3</span></div>
+            <button class="btn-buy" onclick="buyProduct(this)">Vou comprar aqui</button>
+            <button class="btn-shoppe" onclick="shoppeProduct(this,'https://shopee.com.br/produto1')">Comprar na Shopee</button>
+        </div>
+
+        <!-- Produto Exemplo 2 -->
+        <div class="product" data-quantity="5">
+            <img src="produto2.jpg" alt="Produto 2">
+            <h3>Jogo de pratos</h3>
+            <div class="quantity">Quantidade disponível: <span class="qty">5</span></div>
+            <button class="btn-buy" onclick="buyProduct(this)">Vou comprar aqui</button>
+            <button class="btn-shoppe" onclick="shoppeProduct(this,'https://shopee.com.br/produto2')">Comprar na Shopee</button>
+        </div>
+
+        <!-- Adicione mais produtos copiando o bloco acima -->
+
+    </div>
+
+    <div class="thank-you">
+        <p>Mais uma vez, agradecemos muito pelo seu carinho!</p>
+        <p>Lembrete: Dia 20/10 às 16h em nossa casa.</p>
+    </div>
+</section>
+
+<script>
+    // Função para compra local
+    function buyProduct(button){
+        let product = button.closest('.product');
+        let qtySpan = product.querySelector('.qty');
+        let qty = parseInt(product.getAttribute('data-quantity'));
+        if(qty > 0){
+            qty--;
+            product.setAttribute('data-quantity', qty);
+            qtySpan.textContent = qty;
+            if(qty === 0){
+                button.disabled = true;
+                button.textContent = 'Indisponível';
+            }
+        }
+    }
+
+    // Função para Shopee
+    function shoppeProduct(button, link){
+        let product = button.closest('.product');
+        let qtySpan = product.querySelector('.qty');
+        let qty = parseInt(product.getAttribute('data-quantity'));
+        if(qty > 0){
+            qty--;
+            product.setAttribute('data-quantity', qty);
+            qtySpan.textContent = qty;
+            if(qty === 0){
+                product.querySelector('.btn-buy').disabled = true;
+                product.querySelector('.btn-buy').textContent = 'Indisponível';
+            }
+        }
+        window.open(link, '_blank'); // Abre Shopee em nova aba
+    }
+</script>
+
+</body>
+</html>
